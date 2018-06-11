@@ -483,7 +483,18 @@ class AchievementsPrimitive extends Primitive
             ->limit(100) // limit here for performance reasons
             ->findArray();
 
-        $filteredRounds = array_filter($rounds, function ($round) {
+        $yakumanRounds = $db->table('round')
+            ->select('loser_id')
+            ->select('display_name')
+            ->select('riichi')
+            ->join('player', ['player.id', '=', 'round.loser_id'])
+            ->whereIn('event_id', $eventIdList)
+            ->whereIn('outcome', ['multiron', 'ron'])
+            ->whereLt('han', 0)
+            ->limit(100) // limit here for performance reasons
+            ->findArray();
+
+        $filteredRounds = array_filter(array_merge($yakumanRounds, $rounds), function ($round) {
             return !in_array($round['loser_id'], explode(',', $round['riichi']));
         });
 
