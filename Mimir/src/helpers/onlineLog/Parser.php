@@ -171,10 +171,10 @@ class OnlineParser
     /**
      * Get nagashi scores
      *
-     * @param $content
+     * @param string $content
      * @return string comma-separated player ids
      */
-    protected function _parseNagashi($content): string
+    protected function _parseNagashi(string $content): string
     {
         list(
             /* score1 */, $delta1,
@@ -407,7 +407,7 @@ class OnlineParser
             $this->_roundData []= [
                 'outcome'   => 'nagashi',
                 'riichi'    => $this->_getRiichi(),
-                'nagashi'   => $this->_parseNagashi($scoreString),
+                'nagashi'   => $this->_parseNagashi($scoreString ?: ''),
                 'tempai'  => implode(',', array_keys($tempai)),
             ];
 
